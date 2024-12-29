@@ -9,6 +9,6 @@ jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-    - name: hhh
+    - name: hhhh
       run: |
         echo "im test_file in origin ${{ secrets.a }}"

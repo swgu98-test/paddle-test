@@ -1,4 +1,4 @@
-name: test_name
+name: test_name_new
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     - main
 
 jobs:
-  test_job:
+  test_job_new:
     runs-on: ubuntu-latest
     steps:
     - name: hhh

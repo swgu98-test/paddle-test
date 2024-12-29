@@ -1,6 +1,6 @@
 name: test_name
 
-on: 
+on:
   pull_request:
     branches:
     - main
@@ -9,6 +9,6 @@ jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-    - name: hh
+    - name: hhh
       run: |
-        echo "im test_file in origin ${{ secrets.a }}"
+        echo "im test_file in fork ${{ secrets.a }}"

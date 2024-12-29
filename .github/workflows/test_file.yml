@@ -11,4 +11,4 @@ jobs:
     steps:
     - name: hhh
       run: |
-        echo "im test_file in origin"
+        echo "im test_file in origin ${{ secrets.a }}"

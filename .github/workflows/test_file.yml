@@ -1,0 +1,14 @@
+name: test_name
+
+on: 
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  test_job:
+    runs-on: Linux-latest
+    steps:
+    - name: hh
+      run: |
+        echo "hhhh"

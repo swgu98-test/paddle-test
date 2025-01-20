@@ -31,4 +31,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh workflow run Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}
+        gh workflow run Scheduling -f PR_ID=${PR_ID} -f COMMIT_ID=${COMMIT_ID}

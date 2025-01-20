@@ -30,6 +30,6 @@ jobs:
 
     - name: Scheduling other workflow
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         gh workflow run Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}

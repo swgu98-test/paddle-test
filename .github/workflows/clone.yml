@@ -33,4 +33,4 @@ jobs:
     steps:
     - name: Scheduling other workflow
       run: |
-        gh Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}
+        gh workflow run Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}

@@ -1,0 +1,21 @@
+name: Scheduling
+
+on:
+  workflow_dispatch:
+    inputs:
+      PR_ID:
+        description: 'PR number'
+        required: true
+        type: string
+      COMMIT_ID:
+        description: 'commit number'
+        required: true
+        type: string
+
+jobs:
+  test:
+    uses: ./.github/workflows/test-call.yml
+    with:
+      PR_ID: ${PR_ID}
+      COMMIT_ID: ${COMMIT_ID}
+    secrets: inherit

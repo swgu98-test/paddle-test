@@ -32,4 +32,8 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh workflow run Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}
+        curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/PR-CI-Scheduling.yml/dispatches \
+          -d '{"ref": "main"}'

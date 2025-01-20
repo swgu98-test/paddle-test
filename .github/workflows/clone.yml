@@ -1,0 +1,36 @@
+name: Clone
+
+on:
+  pull_request_target:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  Clone:
+    runs-on: ubuntu-latest
+    env:
+      PR_ID: ${{ github.event.pull_request.number }}
+      COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+      BRANCH: develop
+    steps:
+    - name: Clone paddle
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+        fetch-depth: 1000
+
+    - name: Push paddle-action.tar.gz to bos
+      env:
+        A: ${{ secrets.A }}
+      run: |
+        echo "h"
+
+  Scheduling:
+    # needs: Clone
+    runs-on: ubuntu-latest
+    steps:
+    - name: Scheduling other workflow
+      run: |
+        gh Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}

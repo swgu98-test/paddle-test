@@ -27,12 +27,8 @@ jobs:
       run: |
         echo "h"
 
-  Scheduling:
-    # needs: Clone
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
     - name: Scheduling other workflow
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         gh workflow run Scheduling -f PR_ID=${PR_ID} COMMIT_ID=${COMMIT_ID}

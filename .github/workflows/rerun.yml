@@ -14,10 +14,31 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Rerun Workflow
+        if ${{ contains(github.event.comment.body, 'job3') }}
         uses: ./.github/actions/rerun-workflow
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
           PR_ID: ${{ github.event.pull_request.number }}
-          TARGET_WORKFLOW_NAME: 'Your Target Workflow Name'
+          TARGET_WORKFLOW_NAME: 'job3'
+
+      - name: Rerun Workflow
+        if ${{ contains(github.event.comment.body, 'job1') }}
+        uses: ./.github/actions/rerun-workflow
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          PR_ID: ${{ github.event.pull_request.number }}
+          TARGET_WORKFLOW_NAME: 'job1'
+        
+      - name: Rerun Workflow
+        if ${{ contains(github.event.comment.body, 'job2') }}
+        uses: ./.github/actions/rerun-workflow
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          PR_ID: ${{ github.event.pull_request.number }}
+          TARGET_WORKFLOW_NAME: 'job2'

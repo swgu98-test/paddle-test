@@ -1,0 +1,25 @@
+name: test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  PR_ID: ${{ github.event.pull_request.number }}
+  COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+
+jobs:
+  job3:
+    runs-on: ubuntu-latest
+    steps:
+    - name: test
+      run: |
+        echo "test"
+        sleep 20
+        exit 1

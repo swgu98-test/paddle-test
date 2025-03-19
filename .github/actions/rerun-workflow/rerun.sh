@@ -7,7 +7,7 @@ COMMIT_SHA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
 echo "Commit SHA: $COMMIT_SHA"
 
 response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-  "https://api.github.com/repos/$OWNER/$REPO/actions/runs?event=pull_request&per_page=100")
+  "https://api.github.com/repos/$OWNER/$REPO/actions/runs?head_sha=$COMMIT_SHA&per_page=100")
 
 echo "Response: $response"
 

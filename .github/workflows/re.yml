@@ -5,8 +5,8 @@ on:
     types: [created]
 
 env:
-  aaa: ${{ vars.aaa }}
-  bbb: ${{ secrets.bbb }}
+  aaa: ${{ vars.AAA }}
+  bbb: ${{ secrets.BBB }}
 
 jobs:
   re-run:

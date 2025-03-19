@@ -23,7 +23,7 @@ if [ -n "$run_ids" ]; then
     echo "Jobs Response for run_id $run_id: $jobs_response"
 
     if [ "$JOB_NAME" = "all-failed" ]; then
-      failed_jobs=$(echo "$jobs_response" | jq -r '.jobs[] | select(.conclusion == "failure") | .id')
+      failed_jobs=$(echo "$jobs_response" | jq -r '.jobs[] | select(.conclusion != "success") | .id')
     else
       failed_jobs=$(echo "$jobs_response" | jq -r --arg job_name "$JOB_NAME" \
         '.jobs[] | select(.name == $job_name and .conclusion == "failure") | .id')

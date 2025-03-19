@@ -20,7 +20,9 @@ jobs:
   
   job2:
     runs-on: ubuntu-latest
-    run: |
-      echo "job2"
-      sleep 20
-      exit 1
+    steps:
+    - name: step1
+      run: |
+        echo "job2"
+        sleep 20
+        exit 1

@@ -1,0 +1,23 @@
+name: work1
+
+on:
+  workflow_call:
+
+env:
+  PR_ID: ${{ github.event.pull_request.number }}
+  COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+  ci_scripts: ${{ github.workspace }}/ci
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check-bypass:
+    runs-on: ubuntu-latest
+    steps:
+      - name: aa
+        run: |
+          echo "aa"
+          sleep 20
+          exit 1

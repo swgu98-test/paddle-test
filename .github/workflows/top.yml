@@ -1,0 +1,26 @@
+name: top
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  PR_ID: ${{ github.event.pull_request.number }}
+  COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+
+jobs:
+  job1:
+    uses: ./.github/workflows/work1.yml
+  
+  job2:
+    runs-on: ubuntu-latest
+    run: |
+      echo "job2"
+      sleep 20
+      exit 1

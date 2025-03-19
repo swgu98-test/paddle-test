@@ -17,29 +17,40 @@ if [ -n "$run_ids" ]; then
   echo "Found run_ids for commit $COMMIT_SHA: $run_ids"
 
   for run_id in $run_ids; do
-    jobs_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+    if [ "$JOB_NAME" = "all-failed" ]; then
+      echo "Rerunning all failed jobs for run_id: $run_id"
+      
+      rerun_response=$(curl -X POST -s -w "%{http_code}" -o /dev/null \
+        -H "Accept: application/vnd.github.v3+json" \
+        -H "Authorization: Bearer $GITHUB_TOKEN" \
+        "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id/rerun-failed-jobs")
+      if [ "$rerun_response" -eq 201 ]; then
+        echo "Successfully requested rerun for all blocked jobs in run_id: $run_id"
+      else
+        echo "Failed to request rerun for run_id: $run_id with status code $rerun_response"
+      fi
+
+    else
+      jobs_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
       "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id/jobs")
 
-    echo "Jobs Response for run_id $run_id: $jobs_response"
+      echo "Jobs Response for run_id $run_id: $jobs_response"
 
-    if [ "$JOB_NAME" = "all-block" ]; then
-      block_jobs=$(echo "$jobs_response" | jq -r '.jobs[] | select(.conclusion != "success") | .id')
-    else
       block_jobs=$(echo "$jobs_response" | jq -r --arg job_name "$JOB_NAME" \
         '.jobs[] | select(.name == $job_name and .conclusion != "success") | .id')
-    fi
 
-    if [ -n "$block_jobs" ]; then
-      echo "Found block jobs for run_id $run_id: $block_jobs"
+      if [ -n "$block_jobs" ]; then
+        echo "Found block jobs for run_id $run_id: $block_jobs"
 
-      for job_id in $block_jobs; do
-        echo "Rerunning job_id: $job_id"
-        curl -X POST -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token $GITHUB_TOKEN" \
-          "https://api.github.com/repos/$OWNER/$REPO/actions/jobs/$job_id/rerun"
-      done
-    else
-      echo "No block jobs found for run_id $run_id with name $JOB_NAME."
+        for job_id in $block_jobs; do
+          echo "Rerunning job_id: $job_id"
+          curl -X POST -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$OWNER/$REPO/actions/jobs/$job_id/rerun"
+        done
+      else
+        echo "No block jobs found for run_id $run_id with name $JOB_NAME."
+      fi
     fi
   done
 else

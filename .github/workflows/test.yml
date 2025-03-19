@@ -15,11 +15,11 @@ env:
   COMMIT_ID: ${{ github.event.pull_request.head.sha }}
 
 jobs:
-  job3:
+  job-single:
     runs-on: ubuntu-latest
     steps:
-    - name: test
+    - name: job-single
       run: |
-        echo "test"
+        echo "job-single"
         sleep 20
         exit 1

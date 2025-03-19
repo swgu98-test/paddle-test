@@ -13,11 +13,11 @@ defaults:
     shell: bash
 
 jobs:
-  check-bypass:
+  job1-in:
     runs-on: ubuntu-latest
     steps:
-      - name: aa
+      - name: job1-in
         run: |
-          echo "aa"
+          echo "job1-in"
           sleep 20
           exit 1

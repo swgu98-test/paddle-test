@@ -4,12 +4,6 @@ on:
   issue_comment:
     types: [created]
 
-env:
-  PR_ID: ${{ github.event.issue.number }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  OWNER: ${{ github.repository_owner }}
-  REPO: ${{ github.event.repository.name }}
-
 jobs:
   re-run:
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/re-run') }}
@@ -23,16 +17,28 @@ jobs:
         if: ${{ contains(github.event.comment.body, 'job-single') }}
         uses: ./.github/actions/rerun-workflow
         with:
+          PR_ID: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
           TARGET_WORKFLOW_NAME: 'job-single'
 
       - name: Rerun Workflow
         if: ${{ contains(github.event.comment.body, 'job1') }}
         uses: ./.github/actions/rerun-workflow
         with:
+          PR_ID: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
           TARGET_WORKFLOW_NAME: 'job1 / job1-in'
         
       - name: Rerun Workflow
         if: ${{ contains(github.event.comment.body, 'job2') }}
         uses: ./.github/actions/rerun-workflow
         with:
+          PR_ID: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
           TARGET_WORKFLOW_NAME: 'job2'

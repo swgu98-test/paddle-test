@@ -1,0 +1,22 @@
+name: Re-run
+
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  aaa: ${{ vars.AAA }}
+  bbb: ${{ secrets.BBB }}
+
+jobs:
+  re-run:
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/re-run') }}
+    runs-on: ubuntu-latest
+    env:
+      pr_number: ${{ github.event.issue.number }}
+
+    steps:
+      - name: List failed workflows
+        id: list_failed
+        run: |
+          echo 111

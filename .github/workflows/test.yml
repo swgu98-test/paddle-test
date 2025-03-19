@@ -13,6 +13,10 @@ concurrency:
 env:
   PR_ID: ${{ github.event.pull_request.number }}
   COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  OWNER: ${{ github.repository_owner }}
+  REPO: ${{ github.event.repository.name }}
+  TARGET_WORKFLOW_NAME: test
 
 jobs:
   job-single:
@@ -21,5 +25,6 @@ jobs:
     - name: job-single
       run: |
         echo "job-single"
+        bash ./.github/actions/rerun-workflow/rerun.sh
         sleep 20
         exit 1

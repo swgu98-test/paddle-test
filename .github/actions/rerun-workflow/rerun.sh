@@ -4,8 +4,12 @@ set -e
 COMMIT_SHA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$OWNER/$REPO/pulls/$PR_ID" | jq -r '.head.sha')
 
+echo "Commit SHA: $COMMIT_SHA"
+
 response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$OWNER/$REPO/actions/runs?event=pull_request&per_page=100")
+
+echo "Response: $response"
 
 if [ "$TARGET_WORKFLOW_NAME" == "all-failed" ]; then
   # Extract all failed run IDs for the specific commit

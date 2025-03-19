@@ -22,6 +22,7 @@ jobs:
   job-single:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: job-single
       run: |
         echo "job-single"

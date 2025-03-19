@@ -30,7 +30,7 @@ if [ -n "$run_ids" ]; then
     fi
 
     if [ -n "$block_jobs" ]; then
-      echo "Found block jobs for run_id $run_id: $failed_jobs"
+      echo "Found block jobs for run_id $run_id: $block_jobs"
 
       for job_id in $block_jobs; do
         echo "Rerunning job_id: $job_id"

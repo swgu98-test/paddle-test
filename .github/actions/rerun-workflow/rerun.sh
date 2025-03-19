@@ -22,24 +22,24 @@ if [ -n "$run_ids" ]; then
 
     echo "Jobs Response for run_id $run_id: $jobs_response"
 
-    if [ "$JOB_NAME" = "all-failed" ]; then
-      failed_jobs=$(echo "$jobs_response" | jq -r '.jobs[] | select(.conclusion != "success") | .id')
+    if [ "$JOB_NAME" = "all-block" ]; then
+      block_jobs=$(echo "$jobs_response" | jq -r '.jobs[] | select(.conclusion != "success") | .id')
     else
-      failed_jobs=$(echo "$jobs_response" | jq -r --arg job_name "$JOB_NAME" \
-        '.jobs[] | select(.name == $job_name and .conclusion == "failure") | .id')
+      block_jobs=$(echo "$jobs_response" | jq -r --arg job_name "$JOB_NAME" \
+        '.jobs[] | select(.name == $job_name and .conclusion != "success") | .id')
     fi
 
-    if [ -n "$failed_jobs" ]; then
-      echo "Found failed jobs for run_id $run_id: $failed_jobs"
+    if [ -n "$block_jobs" ]; then
+      echo "Found block jobs for run_id $run_id: $failed_jobs"
 
-      for job_id in $failed_jobs; do
+      for job_id in $block_jobs; do
         echo "Rerunning job_id: $job_id"
         curl -X POST -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token $GITHUB_TOKEN" \
           "https://api.github.com/repos/$OWNER/$REPO/actions/jobs/$job_id/rerun"
       done
     else
-      echo "No failed jobs found for run_id $run_id with name $JOB_NAME."
+      echo "No block jobs found for run_id $run_id with name $JOB_NAME."
     fi
   done
 else

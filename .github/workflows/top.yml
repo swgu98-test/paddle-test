@@ -1,4 +1,4 @@
-name: top
+name: nest
 
 on:
   pull_request:
@@ -21,7 +21,7 @@ jobs:
   job2:
     runs-on: ubuntu-latest
     steps:
-    - name: step1
+    - name: job2-step
       run: |
         echo "job2"
         sleep 20

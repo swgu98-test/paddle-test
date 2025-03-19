@@ -31,7 +31,7 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
           PR_ID: ${{ github.event.pull_request.number }}
-          TARGET_WORKFLOW_NAME: 'job1'
+          TARGET_WORKFLOW_NAME: 'job1 / job1-in'
         
       - name: Rerun Workflow
         if: ${{ contains(github.event.comment.body, 'job2') }}

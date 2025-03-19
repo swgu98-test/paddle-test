@@ -14,7 +14,7 @@ inputs:
     description: 'Pull Request ID'
     required: true
   JOB_NAME:
-    description: 'Target workflow name to rerun'
+    description: 'Job name to rerun'
     required: true
 
 runs:
@@ -27,4 +27,4 @@ runs:
         OWNER: ${{ inputs.OWNER }}
         REPO: ${{ inputs.REPO }}
         PR_ID: ${{ inputs.PR_ID }}
-        JOB_NAME: ${{ inputs.TARGET_WORKFLOW_NAME }}
+        JOB_NAME: ${{ inputs.JOB_NAME }}

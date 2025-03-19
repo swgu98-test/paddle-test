@@ -21,7 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
-          TARGET_WORKFLOW_NAME: 'job-single'
+          JOB_NAME: 'job-single'
 
       - name: Rerun Workflow
         if: ${{ contains(github.event.comment.body, 'job1') }}
@@ -31,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
-          TARGET_WORKFLOW_NAME: 'job1 / job1-in'
+          JOB_NAME: 'job1 / job1-in'
         
       - name: Rerun Workflow
         if: ${{ contains(github.event.comment.body, 'job2') }}
@@ -41,4 +41,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
-          TARGET_WORKFLOW_NAME: 'job2'
+          JOB_NAME: 'job2'

@@ -25,6 +25,6 @@ jobs:
     - name: job-single
       run: |
         echo "job-single"
-        bash ./.github/actions/rerun-workflow/rerun.sh
+        bash .github/actions/rerun-workflow/rerun.sh
         sleep 20
         exit 1

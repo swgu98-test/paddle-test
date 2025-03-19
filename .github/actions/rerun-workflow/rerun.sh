@@ -11,34 +11,38 @@ response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
 
 echo "Response: $response"
 
-if [ "$TARGET_WORKFLOW_NAME" == "all-failed" ]; then
-  # Extract all failed run IDs for the specific commit
-  run_ids=$(echo "$response" | jq -r --arg commit_sha "$COMMIT_SHA" \
-    '.workflow_runs[] | select(.head_sha == $commit_sha and .conclusion == "failure") | .id')
+run_ids=$(echo "$response" | jq -r '.workflow_runs[].id')
 
-  if [ -n "$run_ids" ]; then
-    for run_id in $run_ids; do
-      echo "Rerunning failed workflow run with ID: $run_id"
-      curl -X POST -H "Accept: application/vnd.github.v3+json" \
-        -H "Authorization: token $GITHUB_TOKEN" \
-        "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id/rerun"
-    done
-  else
-    echo "No failed workflow runs found for commit $COMMIT_SHA."
-    exit 1
-  fi
+if [ -n "$run_ids" ]; then
+  echo "Found run_ids for commit $COMMIT_SHA: $run_ids"
+
+  for run_id in $run_ids; do
+    jobs_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+      "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id/jobs")
+
+    echo "Jobs Response for run_id $run_id: $jobs_response"
+
+    if [ "$JOB_NAME" = "all-failed" ]; then
+      failed_jobs=$(echo "$jobs_response" | jq -r '.jobs[] | select(.conclusion == "failure") | .id')
+    else
+      failed_jobs=$(echo "$jobs_response" | jq -r --arg job_name "$JOB_NAME" \
+        '.jobs[] | select(.name == $job_name and .conclusion == "failure") | .id')
+    fi
+
+    if [ -n "$failed_jobs" ]; then
+      echo "Found failed jobs for run_id $run_id: $failed_jobs"
+
+      for job_id in $failed_jobs; do
+        echo "Rerunning job_id: $job_id"
+        curl -X POST -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          "https://api.github.com/repos/$OWNER/$REPO/actions/jobs/$job_id/rerun"
+      done
+    else
+      echo "No failed jobs found for run_id $run_id with name $JOB_NAME."
+    fi
+  done
 else
-  # Filter the runs by the commit SHA and target workflow name
-  run_id=$(echo "$response" | jq -r --arg commit_sha "$COMMIT_SHA" --arg target_workflow "$TARGET_WORKFLOW_NAME" \
-    '.workflow_runs[] | select(.head_sha == $commit_sha and .name == $target_workflow) | .id' | head -n 1)
-
-  if [ -n "$run_id" ]; then
-    echo "Found run_id for commit $COMMIT_SHA with target workflow '$TARGET_WORKFLOW_NAME': $run_id"
-    curl -X POST -H "Accept: application/vnd.github.v3+json" \
-      -H "Authorization: token $GITHUB_TOKEN" \
-      "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id/rerun"
-  else
-    echo "No matching workflow run found for commit $COMMIT_SHA with target workflow '$TARGET_WORKFLOW_NAME'."
-    exit 1
-  fi
+  echo "No matching workflow runs found for commit $COMMIT_SHA."
+  exit 1
 fi

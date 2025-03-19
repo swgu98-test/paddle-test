@@ -6,10 +6,6 @@ on:
 
 permissions: read-all
 
-concurrency:
-  group: ${{ github.event.pull_request.number }}-single
-  cancel-in-progress: true
-
 env:
   PR_ID: ${{ github.event.pull_request.number }}
   COMMIT_ID: ${{ github.event.pull_request.head.sha }}
@@ -17,6 +13,10 @@ env:
   OWNER: ${{ github.repository_owner }}
   REPO: ${{ github.event.repository.name }}
   TARGET_WORKFLOW_NAME: test
+
+concurrency:
+  group: ${PR_ID}-single
+  cancel-in-progress: true
 
 jobs:
   job-single:

@@ -16,6 +16,8 @@ env:
   OWNER: ${{ github.repository_owner }}
   REPO: ${{ github.event.repository.name }}
   TARGET_WORKFLOW_NAME: Approval
+  vara: ${{ vars.AAA }}
+  secb: ${{ secrets.BBB }}
 
 jobs:
   approved-actions:

@@ -10,6 +10,8 @@ env:
   PR_ID: ${{ github.event.pull_request.number }}
   COMMIT_ID: ${{ github.event.pull_request.head.sha }}
   token: ${{ vars.ACTION_GITHUB_TOKEN }}
+  vara: ${{ vars.AAA }}
+  secb: ${{ secrets.BBB }}
 
 jobs:
   check-approvers:

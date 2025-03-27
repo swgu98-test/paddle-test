@@ -13,8 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Convert comment to lowercase
+        id: convert
+        run: |
+          comment_body=$(echo '${{ github.event.comment.body }}' | tr '[:upper:]' '[:lower:]')
+          echo $comment_body
+          echo "comment_body=$comment_body" >> $GITHUB_ENV
+
       - name: Rerun Workflow
-        if: ${{ contains(github.event.comment.body, 'all-failed') }}
+        if: ${{ contains(env.comment_body, 'all-failed') }}
         uses: ./.github/actions/rerun-workflow
         with:
           PR_ID: ${{ github.event.issue.number }}
@@ -24,7 +31,7 @@ jobs:
           JOB_NAME: 'all-failed'
     
       - name: Rerun Workflow
-        if: ${{ contains(github.event.comment.body, 'job-single') }}
+        if: ${{ contains(env.comment_body, 'job-single') }}
         uses: ./.github/actions/rerun-workflow
         with:
           PR_ID: ${{ github.event.issue.number }}
@@ -34,7 +41,7 @@ jobs:
           JOB_NAME: 'job-single'
 
       - name: Rerun Workflow
-        if: ${{ contains(github.event.comment.body, 'job1') }}
+        if: ${{ contains(env.comment_body, 'job1') }}
         uses: ./.github/actions/rerun-workflow
         with:
           PR_ID: ${{ github.event.issue.number }}
@@ -44,7 +51,7 @@ jobs:
           JOB_NAME: 'job1 / job1-in'
         
       - name: Rerun Workflow
-        if: ${{ contains(github.event.comment.body, 'job2') }}
+        if: ${{ contains(env.comment_body, 'job2') }}
         uses: ./.github/actions/rerun-workflow
         with:
           PR_ID: ${{ github.event.issue.number }}

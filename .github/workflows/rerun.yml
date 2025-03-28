@@ -16,6 +16,8 @@ jobs:
       - name: Convert comment to lowercase
         id: convert
         run: |
+          echo ${{ github.event.comment.user.login }}
+          echo ${{ github.event.issue.user.login }}
           comment_body=$(echo '${{ github.event.comment.body }}' | tr '[:upper:]' '[:lower:]')
           echo $comment_body
           echo "comment_body=$comment_body" >> $GITHUB_ENV

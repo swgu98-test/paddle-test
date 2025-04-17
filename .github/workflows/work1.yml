@@ -20,4 +20,4 @@ jobs:
         run: |
           echo "job1-in"
           sleep 20
-          exit 1
+          exit 0

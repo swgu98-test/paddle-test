@@ -36,7 +36,7 @@ if [ -n "$run_ids" ]; then
 
       echo "Jobs Response for run_id $run_id: $jobs_response"
 
-      if [[ "$JOB_NAME" == *"bypass"* ]]; then
+      if [[ "$JOB_NAME" == *"job1"* ]]; then
         block_jobs=$(echo "$jobs_response" | jq -r --arg job_name "$JOB_NAME" \
         '.jobs[] | select(.name == $job_name) | .id')
       else
